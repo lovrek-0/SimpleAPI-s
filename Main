@@ -1,0 +1,54 @@
+from flask import Flask, render_template
+import requests
+
+app = Flask(__name__)
+
+@app.route("/", methods=['GET', 'POST'])
+def hello_world():
+    from flask import request
+    
+    # Get parameters from query string or form data
+    amount = request.args.get('amount') or request.form.get('amount') or '5'
+    from_currency = request.args.get('from') or request.form.get('from') or 'USD'
+    to_currency = request.args.get('to') or request.form.get('to') or 'EUR'
+    
+    result = None
+    rate = None
+    error = None
+    amount0 = "You have given 0 amount, to convert please give amount greater than 0"
+    
+    # Only make API call if we have parameters
+    if request.method == 'POST' or request.args.get('amount'):
+        BASE_URL = "https://api.unirateapi.com/api/rates"
+
+        params = {
+            "api_key": "0hOd2Cx7ACcmU0fq7LCOTAR0X8RAy0Iqg2RXhPbyqpm6C4bOpxYovv4jbbpXqM6r",
+            "amount": amount,
+            "from": from_currency,
+            "to": to_currency,
+            "format": "json"
+        }
+        
+        try:
+            response = requests.get(BASE_URL, params=params)
+            
+            if response.status_code == 200:
+                data = response.json()
+                result = data.get('result')
+                rate = data.get('rate')
+            else:
+                error = f"Error: {response.status_code} - {response.text}"
+        except Exception as e:
+            error = f"Error: {str(e)}"
+    
+    return render_template('index.html',
+                         amount=amount,
+                         from_currency=from_currency,
+                         to_currency=to_currency,
+                         result=round(result, 4) if result and result != 0 else amount0,
+                         rate=rate,
+                         error=error)
+
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)
