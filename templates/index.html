@@ -158,12 +158,12 @@
             
             <div class="form-group">
                 <label for="from">From Currency</label>
-                <input type="text" id="from" name="from" value="{{ from_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
+                <input type="text" id="from" name="from" list="currencies" value="{{ from_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
             </div>
             
             <div class="form-group">
                 <label for="to">To Currency</label>
-                <input type="text" id="to" name="to" value="{{ to_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
+                <input type="text" id="to" name="to" list="currencies" value="{{ to_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
             </div>
             
             <div class="button-group">
