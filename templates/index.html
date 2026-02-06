@@ -178,6 +178,7 @@
                 <input type="number" id="amount" name="amount" value="{{ amount }}" step="0.01" min="0" required>
             </div>
             
+
             <div class="form-group">
                 <label for="from">From Currency</label>
                 <div class="input-with-select">
@@ -258,7 +259,7 @@
             
             <div class="result show">
                 <div class="currency">To:</div>
-                <div class="result-amount">{{ to_currency }} {{ result }}</div>
+                <div class="result-amount">{{ to_currency }} <br> {{ result }}</div>
                 <div class="exchange-rate">1 {{ from_currency }} = {{ rate }} {{ to_currency }}</div>
             </div>
         {% endif %}

@@ -15,7 +15,7 @@ def hello_world():
     result = None
     rate = None
     error = None
-    amount0 = "You have given 0 amount, to convert please give amount greater than 0"
+    amount0 = "You have given 0 in the amount field, to convert please give amount greater than 0"
     
     # Only make API call if we have parameters
     if request.method == 'POST' or request.args.get('amount'):
