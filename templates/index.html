@@ -12,7 +12,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #3f53af 0%, #467bca 100%);
         }
         .container {
             background: white;
@@ -20,7 +20,7 @@
             border-radius: 10px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
             text-align: center;
-            max-width: 500px;
+            max-width: 650px;
             width: 100%;
         }
         h1 {
@@ -53,6 +53,28 @@
             box-sizing: border-box;
             transition: border-color 0.3s;
         }
+
+        .input-with-select {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .input-with-select input {
+            flex: 1;
+            width: auto;
+        }
+
+        .input-with-select select {
+            width: 40%;
+            min-width: 140px;
+            padding: 12px;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            background: white;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
         input:focus, select:focus {
             outline: none;
             border-color: #764ba2;
@@ -78,7 +100,7 @@
             color: white;
         }
         .convert-btn:hover {
-            background-color: #764ba2;
+            background-color: #3fa067;
         }
         .reset-btn {
             background-color: #e0e0e0;
@@ -158,12 +180,47 @@
             
             <div class="form-group">
                 <label for="from">From Currency</label>
-                <input type="text" id="from" name="from" list="currencies" value="{{ from_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
+                <div class="input-with-select">
+                    <input type="text" id="from" name="from" list="currencies" value="{{ from_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
+                    <select id="from_select" aria-label="Choose from currency">
+                        <option value="">— choose —</option>
+                        <option value="USD">United States Dollar (USD)</option>
+                        <option value="EUR">Euro (EUR)</option>
+                        <option value="GBP">British Pound (GBP)</option>
+                        <option value="JPY">Japanese Yen (JPY)</option>
+                        <option value="AUD">Australian Dollar (AUD)</option>
+                        <option value="CAD">Canadian Dollar (CAD)</option>
+                        <option value="CHF">Swiss Franc (CHF)</option>
+                        <option value="CNY">Chinese Yuan (CNY)</option>
+                        <option value="INR">Indian Rupee (INR)</option>
+                        <option value="BRL">Brazilian Real (BRL)</option>
+                        <option value="MXN">Mexican Peso (MXN)</option>
+                        <option value="PLN">Polish Zloty (PLN)</option>
+
+                    </select>
+                </div>
             </div>
             
             <div class="form-group">
                 <label for="to">To Currency</label>
-                <input type="text" id="to" name="to" list="currencies" value="{{ to_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
+                <div class="input-with-select">
+                    <input type="text" id="to" name="to" list="currencies" value="{{ to_currency }}" placeholder="e.g., USD, EUR, GBP" required style="text-transform: uppercase;">
+                    <select id="to_select" aria-label="Choose to currency">
+                        <option value="">— choose —</option>
+                        <option value="USD">United States Dollar (USD)</option>
+                        <option value="EUR">Euro (EUR)</option>
+                        <option value="GBP">British Pound (GBP)</option>
+                        <option value="JPY">Japanese Yen (JPY)</option>
+                        <option value="AUD">Australian Dollar (AUD)</option>
+                        <option value="CAD">Canadian Dollar (CAD)</option>
+                        <option value="CHF">Swiss Franc (CHF)</option>
+                        <option value="CNY">Chinese Yuan (CNY)</option>
+                        <option value="INR">Indian Rupee (INR)</option>
+                        <option value="BRL">Brazilian Real (BRL)</option>
+                        <option value="MXN">Mexican Peso (MXN)</option>
+                        <option value="PLN">Polish Zloty (PLN)</option>
+                    </select>
+                </div>
             </div>
             
             <div class="button-group">
@@ -171,6 +228,21 @@
                 <button type="reset" class="reset-btn">Reset</button>
             </div>
         </form>
+
+        <datalist id="currencies">
+            <option value="USD" label="United States Dollar"></option>
+            <option value="EUR" label="Euro"></option>
+            <option value="GBP" label="British Pound"></option>
+            <option value="JPY" label="Japanese Yen"></option>
+            <option value="AUD" label="Australian Dollar"></option>
+            <option value="CAD" label="Canadian Dollar"></option>
+            <option value="CHF" label="Swiss Franc"></option>
+            <option value="CNY" label="Chinese Yuan"></option>
+            <option value="INR" label="Indian Rupee"></option>
+            <option value="BRL" label="Brazilian Real"></option>
+            <option value="MXN" label="Mexican Peso"></option>
+            <option value="PLN" label="Polish Zloty"></option>
+        </datalist>
         
         {% if error %}
             <div class="error show">
@@ -190,6 +262,39 @@
                 <div class="exchange-rate">1 {{ from_currency }} = {{ rate }} {{ to_currency }}</div>
             </div>
         {% endif %}
-    </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fromInput = document.getElementById('from');
+            const toInput = document.getElementById('to');
+            const fromSelect = document.getElementById('from_select');
+            const toSelect = document.getElementById('to_select');
+
+            if (fromSelect && fromInput) {
+                fromSelect.addEventListener('change', function(e) {
+                    if (e.target.value) fromInput.value = e.target.value.toUpperCase();
+                });
+                fromInput.addEventListener('input', function(e) {
+                    const v = e.target.value.toUpperCase();
+                    fromInput.value = v;
+                    try { fromSelect.value = v; } catch (err) {}
+                });
+                if (fromInput.value) fromSelect.value = fromInput.value.toUpperCase();
+            }
+
+            if (toSelect && toInput) {
+                toSelect.addEventListener('change', function(e) {
+                    if (e.target.value) toInput.value = e.target.value.toUpperCase();
+                });
+                toInput.addEventListener('input', function(e) {
+                    const v = e.target.value.toUpperCase();
+                    toInput.value = v;
+                    try { toSelect.value = v; } catch (err) {}
+                });
+                if (toInput.value) toSelect.value = toInput.value.toUpperCase();
+            }
+        });
+        </script>
 </body>
 </html>

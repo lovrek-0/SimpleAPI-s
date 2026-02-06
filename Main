@@ -46,7 +46,7 @@ def hello_world():
                          amount=amount,
                          from_currency=from_currency,
                          to_currency=to_currency,
-                         result=round(result, 4) if result and result != 0 else amount0,
+                         result=round(result, 3) if result and result != 0 else amount0,
                          rate=rate,
                          error=error)
 
